@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+
+    "name": "3ds.guide Enhanced",
+    "description": "A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/",
+    "version": "0.1",
+
+    "permissions": [
+        "http://3ds.guide/",
+        "https://3ds.guide/"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": [
+                "http://3ds.guide/*",
+                "https://3ds.guide/*"
+            ],
+            "js": ["scripts/checkboxes.js"],
+            "run_at": "document_end"
+        }
+    ]
+}
