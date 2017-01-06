@@ -3,7 +3,7 @@
 
     "name": "3ds.guide Enhanced",
     "description": "A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/",
-    "version": "0.10",
+    "version": "0.1.0",
 
     "permissions": [
         "http://3ds.guide/",
