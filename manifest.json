@@ -13,8 +13,10 @@
     "content_scripts": [
         {
             "matches": [
-                "http://3ds.guide/*",
-                "https://3ds.guide/*"
+                "*://3ds.guide/*"
+            ],
+            "exclude_matches": [
+                "*://3ds.guide/credits"
             ],
             "js": ["scripts/checkboxes.js"],
             "run_at": "document_end"
