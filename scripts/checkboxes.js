@@ -26,15 +26,7 @@
 // Get all list items
 var listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li");
 
-
-// This code is an awful mess.
-
-
-
-
-
-// It's also 3am.
-
+// Loop through the list items
 listItems.forEach(function(val, index, arr) {
     // Create a checkbox that will be added
     var newCheckbox = document.createElement("input");
@@ -55,13 +47,13 @@ listItems.forEach(function(val, index, arr) {
             }
         } else {
             // Style the text
-            newCheckbox.parentNode.setAttribute("style", "color: black;");
+            newCheckbox.parentNode.removeAttribute("style");
             // Get any child list items
             var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
             /// Loop through and uncheck them
             for(var i = 0; i < childItems.length; i++) {
                 childItems[i].childNodes[0].checked = false;
-                childItems[i].setAttribute("style", "color: black;");
+                childItems[i].removeAttribute("style");
             }
         }
     };
