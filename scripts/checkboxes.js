@@ -43,6 +43,7 @@ listItems.forEach(function(val, index, arr) {
             // Loop through and check them
             for(var i = 0; i < childItems.length; i++) {
                 childItems[i].childNodes[0].checked = true;
+                childItems[i].childNodes[0].disabled = true;
                 childItems[i].setAttribute("style", "color: gray; text-decoration: line-through;");
             }
         } else {
@@ -53,6 +54,7 @@ listItems.forEach(function(val, index, arr) {
             /// Loop through and uncheck them
             for(var i = 0; i < childItems.length; i++) {
                 childItems[i].childNodes[0].checked = false;
+                childItems[i].childNodes[0].disabled = false;
                 childItems[i].removeAttribute("style");
             }
         }
