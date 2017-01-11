@@ -33,52 +33,189 @@
 // @grant        none
 // ==/UserScript==
 
+
 (function() {
+    console.log("k");
+    // Add CSS
+    addCSS();
+    // Start with no checks
+    window.checks = 0;
     // Add checkboxes
     addCheckboxes();
+    // Add the info box
+    addInfoBox();
+
+    // Adds all the CSS rules
+    function addCSS() {
+        // Create the style tag
+        var styleTag = document.createElement("style");
+        styleTag.type = "text/css";
+        // Add the CSS
+        styleTag.innerHTML = "\
+        #tdsgeInfoBox { \
+            position: fixed; \
+            bottom: 0; \
+            right: 0; \
+            margin-right: 30px; \
+            margin-bottom: 20px; \
+            background-color: rgba(82,173,200,0.3); \
+            opacity: 0.5; \
+            border-radius: 5px; \
+            width: 15%; \
+            text-align: center; \
+            padding: 0px 5px 5px 15px; \
+        } \
+        \
+        .tdsgeCheckbox { \
+            margin-right: 10px; \
+        } \
+        \
+        #tdsgeInfoTitle { \
+            margin-top: 15px; \
+        } \
+        \
+        #tdsgeInfoBox:hover { \
+            opacity: 1; \
+        } \
+        \
+        #tdsgeButton { \
+            background-color: rgba(238,95,91,0.75) \
+        } \
+        \
+        #tdsgeCheckCounter { \
+            font-size: 15px; \
+        } \
+        ";
+        
+        // Add it to the head tag
+        document.head.appendChild(styleTag);
+    }
+
+    // Adds checkboxes to all list items
+    function addCheckboxes() {
+        // Get all list items
+        listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li");
+
+        // Loop through the list items
+        listItems.forEach(function(val, index, arr) {
+            // Create a checkbox that will be added
+            var newCheckbox = document.createElement("input");
+            newCheckbox.setAttribute("type", "checkbox");
+            newCheckbox.setAttribute("class", "tdsgeCheckbox");
+            // User clicked on checkbox
+            newCheckbox.onchange = function() {
+                // Check if the box is checked or not
+                if(newCheckbox.checked) {
+                    // Add a checked box
+                    updateChecks(true);
+                    // Style the text
+                    newCheckbox.parentNode.setAttribute("style", "color: gray; text-decoration: line-through;");
+                    // Get any child list items
+                    var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
+                    // Loop through and check them
+                    for(var i = 0; i < childItems.length; i++) {
+                        // Check if the child isn't checked yet
+                        if(!childItems[i].childNodes[0].checked) {
+                            // Make it checked
+                            childItems[i].childNodes[0].checked = true;
+                            // Add a check
+                            updateChecks(true);
+                        }
+                        childItems[i].childNodes[0].disabled = true;
+                        childItems[i].setAttribute("style", "color: gray; text-decoration: line-through;");
+                    }
+                } else {
+                    // Remove a checked box
+                    updateChecks(false);
+                    // Style the text
+                    newCheckbox.parentNode.removeAttribute("style");
+                    // Get any child list items
+                    var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
+                    /// Loop through and uncheck them
+                    for(var i = 0; i < childItems.length; i++) {
+                        // Check if the child is already checked
+                        if(childItems[i].childNodes[0].checked) {
+                            // Make it unchecked
+                            childItems[i].childNodes[0].checked = false;
+                            // Remove a check
+                            updateChecks(false);
+                        }
+                        childItems[i].childNodes[0].disabled = false;
+                        childItems[i].removeAttribute("style");
+                    }
+                }
+            };
+
+            // Insert it
+            val.insertBefore(newCheckbox, val.childNodes[0]);
+        });
+    }
+
+    // Adds the info box
+    function addInfoBox() {
+        // Create the div
+        var infoDiv = document.createElement("div");
+        // Set it's style
+        infoDiv.setAttribute("id", "tdsgeInfoBox");
+
+        // Create the title
+        var infoTitle = document.createElement("h5");
+        infoTitle.setAttribute("id", "tdsgeInfoTitle");
+        infoTitle.innerHTML = "3DS Guide Enhanced";
+        // Add it to the div
+        infoDiv.appendChild(infoTitle);
+
+        // Create the checkbox counter
+        var checkCounter = document.createElement("p");
+        checkCounter.setAttribute("id", "tdsgeCheckCounter");
+        checkCounter.innerHTML = '<span id="checkCounter">0</span> / ' + listItems.length + " steps completed";
+        // Add it to the div
+        infoDiv.appendChild(checkCounter);
+
+        // Create the clear button
+        var clearButton = document.createElement("button");
+        clearButton.setAttribute("id", "tdsgeButton");
+        clearButton.setAttribute("class", "btn btn--light-outline btn-large");
+        clearButton.innerHTML = "Clear Steps";
+        clearButton.onclick = clearSteps();
+        // Add it to the div
+        infoDiv.appendChild(clearButton);
+
+        // Add the info box to the body
+        document.body.appendChild(infoDiv);
+    }
+
+    // Updates number of checked boxes
+    function updateChecks(checked) {
+        // Check if the box was checked
+        if(checked) {
+            // Add a checked box
+            window.checks++;
+        // Box was unchecked
+        } else {
+            // Remove a checked box
+            window.checks--;
+        }
+
+        // Update the check counter
+        document.getElementById("checkCounter").innerHTML = String(window.checks);
+    }
+
+    // Clears all the checkboxes
+    function clearSteps() {
+        // Get all the checkboxes
+        var checkboxes = document.getElementsByClassName("tdsgeCheckbox");
+        // Loop through checkboxes
+        checkboxes.forEach(function(val, index, arr) {
+            // Uncheck current item
+            val.checked = false;
+            // Enable current item
+            val.disabled = false;
+        });
+        // Reset amount checked
+        checked = 0;
+        if(document.getElementById("checkCounter")) {
+            document.getElementById("checkCounter").innerHTML = 0;
+        }
+    }
 })();
-
-
-// Adds checkboxes to all list items
-function addCheckboxes() {
-    // Get all list items
-    var listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li");
-
-    // Loop through the list items
-    listItems.forEach(function(val, index, arr) {
-        // Create a checkbox that will be added
-        var newCheckbox = document.createElement("input");
-        newCheckbox.setAttribute("type", "checkbox");
-        newCheckbox.setAttribute("style", "margin-right: 10px;");
-        // User clicked on checkbox
-        newCheckbox.onchange = function() {
-            // Check if the box is checked or not
-            if(newCheckbox.checked) {
-                // Style the text
-                newCheckbox.parentNode.setAttribute("style", "color: gray; text-decoration: line-through;");
-                // Get any child list items
-                var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
-                // Loop through and check them
-                for(var i = 0; i < childItems.length; i++) {
-                    childItems[i].childNodes[0].checked = true;
-                    childItems[i].childNodes[0].disabled = true;
-                    childItems[i].setAttribute("style", "color: gray; text-decoration: line-through;");
-                }
-            } else {
-                // Style the text
-                newCheckbox.parentNode.removeAttribute("style");
-                // Get any child list items
-                var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
-                /// Loop through and uncheck them
-                for(var i = 0; i < childItems.length; i++) {
-                    childItems[i].childNodes[0].checked = false;
-                    childItems[i].childNodes[0].disabled = false;
-                    childItems[i].removeAttribute("style");
-                }
-            }
-        };
-
-        // Insert it
-        val.insertBefore(newCheckbox, val.childNodes[0]);
-    });
-}
