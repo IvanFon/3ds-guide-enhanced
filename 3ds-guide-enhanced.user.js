@@ -55,6 +55,7 @@
         styleTag.type = "text/css";
         // Add the CSS
         styleTag.innerHTML = "\
+        \
         #tdsgeInfoBox { \
             position: fixed; \
             bottom: 0; \
@@ -70,7 +71,7 @@
         } \
         \
         .tdsgeCheckbox { \
-            margin-right: 10px; \
+            margin-right: 50px; \
         } \
         \
         #tdsgeInfoTitle { \
@@ -82,11 +83,16 @@
         } \
         \
         #tdsgeButton { \
-            background-color: rgba(238,95,91,0.75) \
+            background-color: rgba(238,95,91,0.75); \
+            margin: 0 0 0 0; \
         } \
         \
         #tdsgeCheckCounter { \
             font-size: 15px; \
+        } \
+        \
+        #tdsgeAuthorLink { \
+            margin-top: 15px; \
         } \
         ";
         
@@ -105,6 +111,7 @@
             var newCheckbox = document.createElement("input");
             newCheckbox.setAttribute("type", "checkbox");
             newCheckbox.setAttribute("class", "tdsgeCheckbox");
+            newCheckbox.setAttribute("style", "margin-right: 10px;");
             // User clicked on checkbox
             newCheckbox.onchange = function() {
                 // Check if the box is checked or not
@@ -181,9 +188,15 @@
         clearButton.setAttribute("class", "btn btn--light-outline btn-large");
         clearButton.innerHTML = "Clear Steps";
         clearButton.onclick = clearSteps;
-
         // Add it to the div
         infoDiv.appendChild(clearButton);
+
+        // Create the author link
+        var authorLink = document.createElement("h6");
+        authorLink.setAttribute("id", "tdsgeAuthorLink");
+        authorLink.innerHTML = '<a href="https://github.com/ivanfon">Ivan Fonseca</a> <3';
+        // Add it to the div
+        infoDiv.appendChild(authorLink);
 
         // Add the info box to the body
         document.body.appendChild(infoDiv);
