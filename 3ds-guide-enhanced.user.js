@@ -26,7 +26,7 @@
 // ==UserScript==
 // @name         3DS Guide Enhanced
 // @namespace    https://ivanfon.github.io/
-// @version      0.2.1
+// @version      0.2.2
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
 // @match        *://3ds.guide/*
