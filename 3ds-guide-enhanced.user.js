@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name         3DS Guide Enhanced
+// @namespace    https://ivanfon.github.io/
+// @version      0.2.2
+// @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
+// @author       Ivan Fonseca
+// @grant        none
+// @match        *://3ds.guide/*
+// @exclude      *://3ds.guide/
+// @exclude      *://3ds.guide/credits
+// ==/UserScript==
+
 /*
     3ds-guide-enhanced.user.js
     Part of the 3DS Guide Enhanced extension.
@@ -22,19 +34,6 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-
-// ==UserScript==
-// @name         3DS Guide Enhanced
-// @namespace    https://ivanfon.github.io/
-// @version      0.2.2
-// @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
-// @author       Ivan Fonseca
-// @grant        none
-// @match        *://3ds.guide/*
-// @exclude      *://3ds.guide/
-// @exclude      *://3ds.guide/credits
-// ==/UserScript==
-
 
 (function() {
     // Variables
