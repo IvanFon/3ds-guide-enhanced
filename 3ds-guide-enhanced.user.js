@@ -128,7 +128,7 @@
     // Adds checkboxes to all list items
     function addCheckboxes() {
         // Get all items to add checkboxes to
-        listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li, .notice, .notice--info, .notice--danger, .notice--success, .notice--warning");
+        listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li, .notice, .notice--info, .notice--danger, .notice--success, .notice--warning, .notice--primary");
         // Convert it to an array
         listItems = [].slice.call(listItems);
         // Remove the last three items
