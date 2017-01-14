@@ -68,6 +68,29 @@
             width: 15%; \
             text-align: center; \
             padding: 0px 5px 5px 15px; \
+            animation: fadeOut 1s; \
+        } \
+        \
+        #tdsgeInfoBox:hover { \
+            animation: fadeIn 1s; \
+        } \
+        \
+        @keyframes fadeIn { \
+            0% { \
+                opacity: 0.5; \
+            } \
+            100% { \
+                opacity: 1; \
+            } \
+        } \
+        \
+        @keyframes fadeOut { \
+            0% { \
+                opacity: 1; \
+            } \
+            100% { \
+                opacity: 0.5; \
+            } \
         } \
         \
         .tdsgeCheckbox { \
