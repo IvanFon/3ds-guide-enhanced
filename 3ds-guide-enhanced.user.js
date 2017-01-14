@@ -125,9 +125,13 @@
 
     // Adds checkboxes to all list items
     function addCheckboxes() {
-        // Get all list items
-        listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li");
-
+        // Get all items to add checkboxes to
+        listItems = document.querySelectorAll("div#main > article.page > div.page__inner-wrap > section.page__content li, .notice, .notice--info, .notice--danger, .notice--success, .notice--warning");
+        // Convert it to an array
+        listItems = [].slice.call(listItems);
+        // Remove the last three items
+        listItems.splice(listItems.length - 3, listItems.length);
+        
         // Loop through the list items
         listItems.forEach(function(val, index, arr) {
             // Create a checkbox that will be added
@@ -143,6 +147,7 @@
                     updateChecks(true);
                     // Style the text
                     newCheckbox.parentNode.setAttribute("style", "color: gray; text-decoration: line-through;");
+                    // #main > article > div > section > center > div:nth-child(1)
                     // Get any child list items
                     var childItems = newCheckbox.parentNode.getElementsByTagName("LI");
                     // Loop through and check them
