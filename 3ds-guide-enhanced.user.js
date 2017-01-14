@@ -29,8 +29,10 @@
 // @version      0.2.2
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
-// @match        *://3ds.guide/*
 // @grant        none
+// @match        *://3ds.guide/*
+// @exclude      *://3ds.guide/
+// @exclude      *://3ds.guide/credits
 // ==/UserScript==
 
 
