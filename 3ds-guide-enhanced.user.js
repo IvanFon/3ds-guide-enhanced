@@ -35,11 +35,14 @@
 
 
 (function() {
-    console.log("k");
+    // Variables
+    // How many boxes are checked
+    var checks = 0;
+    // List of all checkboxes
+    var listItems;
+
     // Add CSS
     addCSS();
-    // Start with no checks
-    window.checks = 0;
     // Add checkboxes
     addCheckboxes();
     // Add the info box
@@ -177,7 +180,8 @@
         clearButton.setAttribute("id", "tdsgeButton");
         clearButton.setAttribute("class", "btn btn--light-outline btn-large");
         clearButton.innerHTML = "Clear Steps";
-        clearButton.onclick = clearSteps();
+        clearButton.onclick = clearSteps;
+
         // Add it to the div
         infoDiv.appendChild(clearButton);
 
@@ -190,27 +194,27 @@
         // Check if the box was checked
         if(checked) {
             // Add a checked box
-            window.checks++;
+            checks++;
         // Box was unchecked
         } else {
             // Remove a checked box
-            window.checks--;
+            checks--;
         }
 
         // Update the check counter
-        document.getElementById("checkCounter").innerHTML = String(window.checks);
+        document.getElementById("checkCounter").innerHTML = String(checks);
     }
 
-    // Clears all the checkboxes
+    // Unchecks all steps and resets counter
     function clearSteps() {
-        // Get all the checkboxes
-        var checkboxes = document.getElementsByClassName("tdsgeCheckbox");
         // Loop through checkboxes
-        checkboxes.forEach(function(val, index, arr) {
+        listItems.forEach(function(val, index, arr) {
             // Uncheck current item
-            val.checked = false;
+            val.childNodes[0].checked = false;
             // Enable current item
-            val.disabled = false;
+            val.childNodes[0].disabled = false;
+            // Remove styles
+            val.removeAttribute("style");
         });
         // Reset amount checked
         checked = 0;
