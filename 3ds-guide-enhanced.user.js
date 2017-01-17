@@ -58,7 +58,7 @@
         // Add the CSS
         GM_addStyle("\
         \
-        #tdsgeInfoBox { \
+        #tdsge-info-box { \
             position: fixed; \
             bottom: 0; \
             right: 0; \
@@ -70,14 +70,14 @@
             width: 15%; \
             text-align: center; \
             padding: 0px 5px 5px 15px; \
-            animation: fadeOut 1s; \
+            animation: fade-out 1s; \
         } \
         \
-        #tdsgeInfoBox:hover { \
-            animation: fadeIn 1s; \
+        #tdsge-info-box:hover { \
+            animation: fade-in 1s; \
         } \
         \
-        @keyframes fadeIn { \
+        @keyframes fade-in { \
             0% { \
                 opacity: 0.5; \
             } \
@@ -86,7 +86,7 @@
             } \
         } \
         \
-        @keyframes fadeOut { \
+        @keyframes fade-out { \
             0% { \
                 opacity: 1; \
             } \
@@ -95,32 +95,32 @@
             } \
         } \
         \
-        .tdsgeCheckbox { \
+        .tdsge-checkbox { \
             margin-right: 50px; \
         } \
         \
-        #tdsgeInfoTitle { \
+        #tdsge-info-title { \
             margin-top: 15px; \
         } \
         \
-        #tdsgeInfoBox:hover { \
+        #tdsge-info-box:hover { \
             opacity: 1; \
         } \
         \
-        #tdsgeButton { \
+        #tdsge-button { \
             background-color: rgba(238,95,91,0.75); \
             margin: 0 0 0 0; \
         } \
         \
-        #tdsgeCheckCounter { \
+        #tdsge-check-counter { \
             font-size: 15px; \
         } \
         \
-        #tdsgeAuthorLink { \
+        #tdsge-author-link { \
             margin-top: 15px; \
         } \
         \
-        #tdsgeProgressContainer { \
+        #tdsge-progress-container { \
             margin-top: 0%; \
             margin-bottom: 0%; \
             padding-top: 0%; \
@@ -136,7 +136,7 @@
             width: 0%; \
         } \
         \
-        #tdsgeProgressBar { \
+        #tdsge-progress-car { \
             display: block; \
             position: fixed; \
             overflow: hidden; \
@@ -159,7 +159,7 @@
             // Create a checkbox that will be added
             var newCheckbox = document.createElement("input");
             newCheckbox.setAttribute("type", "checkbox");
-            newCheckbox.setAttribute("class", "tdsgeCheckbox");
+            newCheckbox.setAttribute("class", "tdsge-checkbox");
             newCheckbox.setAttribute("style", "margin-right: 10px;");
             // User clicked on checkbox
             newCheckbox.onchange = function() {
@@ -216,25 +216,25 @@
         // Create the div
         var infoDiv = document.createElement("div");
         // Set it's style
-        infoDiv.setAttribute("id", "tdsgeInfoBox");
+        infoDiv.setAttribute("id", "tdsge-info-box");
 
         // Create the title
         var infoTitle = document.createElement("h5");
-        infoTitle.setAttribute("id", "tdsgeInfoTitle");
+        infoTitle.setAttribute("id", "tdsge-info-title");
         infoTitle.innerHTML = "3DS Guide Enhanced";
         // Add it to the div
         infoDiv.appendChild(infoTitle);
 
         // Create the checkbox counter
         var checkCounter = document.createElement("p");
-        checkCounter.setAttribute("id", "tdsgeCheckCounter");
+        checkCounter.setAttribute("id", "tdsge-check-counter");
         checkCounter.innerHTML = '<span id="checkCounter">0</span> / ' + listItems.length + " steps completed";
         // Add it to the div
         infoDiv.appendChild(checkCounter);
 
         // Create the clear button
         var clearButton = document.createElement("button");
-        clearButton.setAttribute("id", "tdsgeButton");
+        clearButton.setAttribute("id", "tdsge-button");
         clearButton.setAttribute("class", "btn btn--light-outline btn-large");
         clearButton.innerHTML = "Clear Steps";
         clearButton.onclick = clearSteps;
@@ -243,7 +243,7 @@
 
         // Create the author link
         var authorLink = document.createElement("h6");
-        authorLink.setAttribute("id", "tdsgeAuthorLink");
+        authorLink.setAttribute("id", "tdsge-author-link");
         authorLink.innerHTML = '<a href="https://github.com/ivanfon">Ivan Fonseca</a> <3';
         // Add it to the div
         infoDiv.appendChild(authorLink);
@@ -293,11 +293,11 @@
     function addProgress() {
         // Create the progress bar container
         barContainer = document.createElement("div");
-        barContainer.setAttribute("id", "tdsgeProgressContainer");
+        barContainer.setAttribute("id", "tdsge-progress-container");
 
         // Create the progress bar
         var bar = document.createElement("span");
-        bar.setAttribute("id", "tdsgeProgressBar");
+        bar.setAttribute("id", "tdsge-progress-car");
 
         // Add the progress bar as a child of the container
         barContainer.appendChild(bar);
