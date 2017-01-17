@@ -4,7 +4,7 @@
 // @version      0.2.2
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
-// @grant        none
+// @grant        GM_addStyle
 // @match        *://3ds.guide/*
 // @exclude      *://3ds.guide/
 // @exclude      *://3ds.guide/credits
@@ -51,11 +51,8 @@
 
     // Adds all the CSS rules
     function addCSS() {
-        // Create the style tag
-        var styleTag = document.createElement("style");
-        styleTag.type = "text/css";
         // Add the CSS
-        styleTag.innerHTML = "\
+        GM_addStyle("\
         \
         #tdsgeInfoBox { \
             position: fixed; \
@@ -118,10 +115,7 @@
         #tdsgeAuthorLink { \
             margin-top: 15px; \
         } \
-        ";
-        
-        // Add it to the head tag
-        document.head.appendChild(styleTag);
+        ");
     }
 
     // Adds checkboxes to all list items
