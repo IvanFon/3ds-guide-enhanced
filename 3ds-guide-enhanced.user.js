@@ -41,6 +41,8 @@
     var checks = 0;
     // List of all checkboxes
     var listItems;
+    // Progress bar container
+    var barContainer;
 
     // Add CSS
     addCSS();
@@ -48,6 +50,8 @@
     addCheckboxes();
     // Add the info box
     addInfoBox();
+    // Add the progress bar
+    addProgress();
 
     // Adds all the CSS rules
     function addCSS() {
@@ -115,6 +119,29 @@
         #tdsgeAuthorLink { \
             margin-top: 15px; \
         } \
+        \
+        #tdsgeProgressContainer { \
+            margin-top: 0%; \
+            margin-bottom: 0%; \
+            padding-top: 0%; \
+            padding-bottom: 0% \
+            font-size: 0.2rem; \
+            position: fixed; \
+            background: #7d9fe8; \
+            height: 7px; \
+            top: 0; \
+            left: 0; \
+            right: 0; \
+            z-index: 9001; \
+            width: 0%; \
+        } \
+        \
+        #tdsgeProgressBar { \
+            display: block; \
+            position: fixed; \
+            overflow: hidden; \
+        } \
+         \
         ");
     }
 
@@ -239,6 +266,9 @@
 
         // Update the check counter
         document.getElementById("checkCounter").innerHTML = String(checks);
+
+        // Update progress bar
+        barContainer.setAttribute("style", "width: " + (100 * checks / listItems.length) + "%;");
     }
 
     // Unchecks all steps and resets counter
@@ -257,5 +287,22 @@
         if(document.getElementById("checkCounter")) {
             document.getElementById("checkCounter").innerHTML = 0;
         }
+    }
+
+    // Add the progress bar
+    function addProgress() {
+        // Create the progress bar container
+        barContainer = document.createElement("div");
+        barContainer.setAttribute("id", "tdsgeProgressContainer");
+
+        // Create the progress bar
+        var bar = document.createElement("span");
+        bar.setAttribute("id", "tdsgeProgressBar");
+
+        // Add the progress bar as a child of the container
+        barContainer.appendChild(bar);
+
+        // Add it to the top
+        document.body.insertBefore(barContainer, document.querySelector("#main"));
     }
 })();
