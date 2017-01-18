@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name         3DS Guide Enhanced
 // @namespace    https://ivanfon.github.io/
-// @version      0.3.1
+// @version      0.4
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
 // @grant        GM_addStyle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_listValues
 // @match        *://3ds.guide/*
 // @exclude      *://3ds.guide/
 // @exclude      *://3ds.guide/credits
@@ -43,6 +46,8 @@
     var listItems;
     // Progress bar container
     var barContainer;
+    // Settings popup
+    var settingsPopup;
 
     // Add CSS
     addCSS();
@@ -52,6 +57,10 @@
     addInfoBox();
     // Add the progress bar
     addProgress();
+    // Add the settings popup
+    addSettings();
+    // Load settings from local storage
+    loadSettings();
 
     // Adds all the CSS rules
     function addCSS() {
@@ -63,6 +72,7 @@
             bottom: 0; \
             right: 0; \
             margin-right: 30px; \
+            margin-left: 30px; \
             margin-bottom: 20px; \
             background-color: rgba(82,173,200,0.3); \
             opacity: 0.5; \
@@ -107,9 +117,13 @@
             opacity: 1; \
         } \
         \
-        #tdsge-button { \
+        #tdsge-clear-button, #tdsge-settings-close-button { \
             background-color: rgba(238,95,91,0.75); \
-            margin: 0 0 0 0; \
+        } \
+        \
+        #tdsge-settings-button { \
+            background-color: #23dd8d; \
+            margin-top: 10px; \
         } \
         \
         #tdsge-check-counter { \
@@ -149,6 +163,53 @@
             background: #7d9fe8; \
         } \
         \
+        .tdsge-button { \
+            margin: 0 0 0 0; \
+        } \
+        \
+        #tdsge-settings-popup-container { \
+            display: none; \
+            position: fixed; \
+            z-index: 9002; \
+            left: 0; \
+            top: 0; \
+            width: 100%; \
+            height: 100%; \
+            overflow: auto; \
+            background: rgb(0, 0, 0); \
+            background: rgba(0, 0, 0, 0.4); \
+        } \
+        \
+        #tdsge-settings-popup-content { \
+            margin: 15% auto; \
+            padding: 20px; \
+            border: 1px solid #888; \
+            width: 40%; \
+            background: #e8e8e8; \
+        } \
+        \
+        #tdsge-settings-popup-content h3 { \
+            margin-top: 20px; \
+            font-size: 25px; \
+        } \
+        \
+        #tdsge-settings-popup-content h5 { \
+            margin-top: 20px; \
+        } \
+        \
+        #tdsge-settings-popup-content label { \
+            font-size: 15px; \
+        } \
+        \
+        #tdsge-settings-popup-content input { \
+            float: left; \
+            margin-right: 10px; \
+        } \
+        \
+        #tdsge-settings-version { \
+            font-size: 14px; \
+            padding-left: 10px; \
+        } \
         ");
     }
 
@@ -241,12 +302,21 @@
 
         // Create the clear button
         var clearButton = document.createElement("button");
-        clearButton.setAttribute("id", "tdsge-button");
-        clearButton.setAttribute("class", "btn btn--light-outline btn-large");
+        clearButton.setAttribute("id", "tdsge-clear-button");
+        clearButton.setAttribute("class", "btn btn--light-outline btn-large tdsge-button");
         clearButton.innerHTML = "Clear Steps";
         clearButton.onclick = clearSteps;
         // Add it to the div
         infoDiv.appendChild(clearButton);
+
+        // Create the settings button
+        var settingsButton = document.createElement("button");
+        settingsButton.setAttribute("id", "tdsge-settings-button");
+        settingsButton.setAttribute("class", "btn btn--light-outline btn-large tdsge-button");
+        settingsButton.innerHTML = "Settings";
+        settingsButton.onclick = openSettings;
+        // Add it to the div
+        infoDiv.appendChild(settingsButton);
 
         // Create the author link
         var authorLink = document.createElement("h6");
@@ -324,5 +394,113 @@
 
         // Add it to the top
         document.body.insertBefore(barContainer, document.querySelector("#main"));
+    }
+
+    // Add the settings popup to the page
+    function addSettings() {
+        // Create the settings popup container
+        settingsPopup = document.createElement("div");
+        settingsPopup.setAttribute("id", "tdsge-settings-popup-container");
+
+        // Create the settings popup content
+        var settingsContent = document.createElement("div");
+        settingsContent.setAttribute("id", "tdsge-settings-popup-content");
+        settingsContent.innerHTML = '\
+        <h3>3DS Guide Enhanced Settings<span id="tdsge-settings-version">v0.3.1</span></h3>\
+        <h5>Info box position:</h5>\
+        <input type="radio" name="info-box-pos" id="tdsge-settings-info-box-pos-left" value="left">\
+        <label for="left">Left</label>\
+        <input type="radio" name="info-box-pos" id="tdsge-settings-info-box-pos-right" value="right">\
+        <label for="right">Right</label>\
+        <br>\
+        <button class="btn btn--light-outline btn-large" id="tdsge-settings-close-button">Close</button>\
+        ';
+
+        // Add it to the container
+        settingsPopup.appendChild(settingsContent);
+
+        // Add the popup to the body
+        document.body.appendChild(settingsPopup);
+
+        // Add the close event to the close button
+        document.querySelector("#tdsge-settings-close-button").onclick = closeSettings;
+
+        // Select position radio buttons
+        if(GM_listValues().indexOf("tdsge-info-box-left") > -1) {
+            if(GM_getValue("tdsge-info-box-left")) {
+                document.querySelector("#tdsge-settings-info-box-pos-left").checked = true;
+            } else {
+                document.querySelector("#tdsge-settings-info-box-pos-right").checked = true;
+            }
+        }
+        
+        // Add settings events to controls
+        document.querySelector("#tdsge-settings-info-box-pos-left").onclick = changePosition;
+        document.querySelector("#tdsge-settings-info-box-pos-right").onclick = changePosition;
+    }
+
+    // Opens the settings popup
+    function openSettings() {
+        settingsPopup.style.display = "block";
+    }
+
+    // Closes the settings popup
+    function closeSettings() {
+        settingsPopup.style.display = "none";
+    }
+
+    // Change the info box position
+    function changePosition() {
+        // Get the direction
+        var left = document.querySelector("#tdsge-settings-info-box-pos-left").checked;
+        // Get the info box
+        var infoBox = document.querySelector("#tdsge-info-box");
+
+        if(left) {
+            infoBox.style.left = 0;
+            infoBox.style.right = "";
+        } else {
+            infoBox.style.left = "";
+            infoBox.style.right = 0;
+        }
+
+        // Store the new value
+        GM_setValue("tdsge-info-box-left", left);
+    }
+
+    // Loads settings from local storage
+    function loadSettings() {
+        // Get list of stored settings for 3dsge
+        var tdsgeSettings = [];
+
+        // Loop through stored settings
+        GM_listValues().forEach(function(val) {
+            // Check if it starts with tdsge
+            if(val.substring(0, 5) == "tdsge") {
+                tdsgeSettings.push(val);
+            }
+        });
+
+        // Loop through tdsge settings
+        tdsgeSettings.forEach(function(val) {
+            switch(val) {
+                case "tdsge-info-box-left":
+                    // Get the infobox
+                    // Get the info box
+                    var infoBox = document.querySelector("#tdsge-info-box");
+                    // Get the position
+                    var left = GM_getValue(val);
+                    // Move the infobox
+                    if(left) {
+                        infoBox.style.left = 0;
+                        infoBox.style.right = "";
+                    } else {
+                        infoBox.style.left = "";
+                        infoBox.style.right = 0;
+                    }
+                default:
+                    // words
+            }
+        });
     }
 })();
