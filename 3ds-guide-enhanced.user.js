@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         3DS Guide Enhanced
 // @namespace    https://ivanfon.github.io/
-// @version      0.4
+// @version      0.4.1
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_listValues
+// @grant        GM_info
 // @match        *://3ds.guide/*
 // @exclude      *://3ds.guide/
 // @exclude      *://3ds.guide/credits
@@ -406,7 +407,7 @@
         var settingsContent = document.createElement("div");
         settingsContent.setAttribute("id", "tdsge-settings-popup-content");
         settingsContent.innerHTML = '\
-        <h3>3DS Guide Enhanced Settings<span id="tdsge-settings-version">v0.3.1</span></h3>\
+        <h3>3DS Guide Enhanced Settings<span id="tdsge-settings-version">v0.0.0/span></h3>\
         <h5>Info box position:</h5>\
         <input type="radio" name="info-box-pos" id="tdsge-settings-info-box-pos-left" value="left">\
         <label for="left">Left</label>\
@@ -437,6 +438,9 @@
         // Add settings events to controls
         document.querySelector("#tdsge-settings-info-box-pos-left").onclick = changePosition;
         document.querySelector("#tdsge-settings-info-box-pos-right").onclick = changePosition;
+
+        // Fill the version
+        document.querySelector("#tdsge-settings-version").innerHTML = "v" + GM_info.script.version;
     }
 
     // Opens the settings popup
