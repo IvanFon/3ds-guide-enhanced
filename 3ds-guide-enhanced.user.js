@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         3DS Guide Enhanced
 // @namespace    https://ivanfon.github.io/
-// @version      0.3
+// @version      0.3.1
 // @description  A browser extension with enhancements for the 3DS hacking guide found at https://3ds.guide/
 // @author       Ivan Fonseca
 // @grant        GM_addStyle
@@ -127,7 +127,6 @@
             padding-bottom: 0% \
             font-size: 0.2rem; \
             position: fixed; \
-            background: #7d9fe8; \
             height: 7px; \
             top: 0; \
             left: 0; \
@@ -136,12 +135,20 @@
             width: 0%; \
         } \
         \
-        #tdsge-progress-car { \
+        #tdsge-progress-bar { \
             display: block; \
             position: fixed; \
             overflow: hidden; \
         } \
-         \
+        \
+        .tdsge-progress-bar-green { \
+            background: #26d6a1; \
+        } \
+        \
+        .tdsge-progress-bar-blue { \
+            background: #7d9fe8; \
+        } \
+        \
         ");
     }
 
@@ -267,8 +274,20 @@
         // Update the check counter
         document.getElementById("checkCounter").innerHTML = String(checks);
 
+        // Calculate percentage completed
+        var percentDone = 100 * (checks / listItems.length);
+
         // Update progress bar
-        barContainer.setAttribute("style", "width: " + (100 * checks / listItems.length) + "%;");
+        barContainer.setAttribute("style", "width: " + percentDone + "%;");
+
+        // Colour the progress bar
+        if(percentDone == 100) {
+            // Make it green
+            barContainer.setAttribute("class", "tdsge-progress-bar-green");
+        } else {
+            // Make it blue
+            barContainer.setAttribute("class", "tdsge-progress-bar-blue");
+        }
     }
 
     // Unchecks all steps and resets counter
@@ -297,7 +316,8 @@
 
         // Create the progress bar
         var bar = document.createElement("span");
-        bar.setAttribute("id", "tdsge-progress-car");
+        bar.setAttribute("id", "tdsge-progress-bar");
+        bar.setAttribute("class", "tdsge-progress-bar-blue");
 
         // Add the progress bar as a child of the container
         barContainer.appendChild(bar);
